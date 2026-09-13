@@ -1,4 +1,4 @@
-# Art Appreciation Web Blog — Team FIBA
+# Art Appreciation Web Blog 
 
 A lightweight, static blog platform created as a collaborative academic project for *Art Appreciation*. This repository serves as a digital gallery and blog documenting our group's analyses, critiques, and local field observations.
 
