@@ -12,7 +12,7 @@ A lightweight, static blog platform created as a collaborative academic project 
 * *[Luke Edward G. Schofield]*
 * *[Albert Lawrence B. Robiñol]*
 * *[Steven James P. Leosala]*
-* *[Avryl Marapoc]*
+* *[Avryl Rohmer T. Marapoc]*
 * *[Dwayne Lawrence SF. San Juan]*
 
 
