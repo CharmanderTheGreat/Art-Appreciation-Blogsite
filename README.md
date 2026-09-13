@@ -7,7 +7,7 @@ A lightweight, static blog platform created as a collaborative academic project 
 
 ---
 
-## 👥 Group Members (Team FIBA)
+## 👥 Group Members 
 
 * *[Luke Edward G. Schofield]*
 * *[Albert Lawrence B. Robiñol]*
