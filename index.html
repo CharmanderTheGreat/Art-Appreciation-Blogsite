@@ -36,8 +36,8 @@
 </script>
 
 <style>
-  html { scroll-behavior: smooth; }
-  body { background-color: #0c0f17; color: #e5e7eb; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  body { background-color: #0c0f17; color: #e5e7eb; overflow-x: hidden; }
 
   ::selection { background: #ff5e57; color: #ffffff; }
 
@@ -100,6 +100,164 @@
   @keyframes lbScale { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
 
   .hidden-card { display: none !important; }
+
+  /* ============ ACCESSIBILITY ============ */
+
+  /* Font size scaling */
+  html.font-scale-2 { font-size: 113%; }
+  html.font-scale-3 { font-size: 127%; }
+
+  /* Step colors as CSS variables so Color-Blind Mode can safely override them */
+  :root {
+    --step-color-0: #ff5e57;
+    --step-color-1: #ffa801;
+    --step-color-2: #575fcf;
+  }
+  body.colorblind-mode {
+    --step-color-0: #0072B2;
+    --step-color-1: #E69F00;
+    --step-color-2: #009E73;
+  }
+  body.colorblind-mode .theory-tag-Imitationalism { background: linear-gradient(135deg,#0072B2,#00537f); }
+  body.colorblind-mode .theory-tag-Formalism      { background: linear-gradient(135deg,#009E73,#00714f); }
+  body.colorblind-mode .theory-tag-Emotionalism   { background: linear-gradient(135deg,#D55E00,#a24700); }
+  body.colorblind-mode .theory-tag-Utilitarianism { background: linear-gradient(135deg,#E69F00,#b57c00); }
+
+  /* Colorblind-safe palette applied site-wide (Okabe-Ito palette):
+     coral -> vermillion #D55E00, amberGlow -> orange #E69F00, electric -> blue #0072B2 */
+  body.colorblind-mode .text-amberGlow,
+  body.colorblind-mode .text-amberGlow\/80,
+  body.colorblind-mode .text-amberGlow\/70 {
+    color: #E69F00 !important;
+  }
+  body.colorblind-mode .bg-amberGlow {
+    background-color: #E69F00 !important;
+  }
+  body.colorblind-mode .border-amberGlow\/30 {
+    border-color: rgba(230,159,0,0.35) !important;
+  }
+  body.colorblind-mode .border-coral\/60 {
+    border-color: rgba(213,94,0,0.6) !important;
+  }
+  body.colorblind-mode .shadow-coral\/20 {
+    --tw-shadow-color: rgba(213,94,0,0.2) !important;
+  }
+  body.colorblind-mode ::selection {
+    background: #D55E00 !important;
+    color: #ffffff !important;
+  }
+  /* Gradient combinations used across the intro, buttons, and logo badge */
+  body.colorblind-mode .from-amberGlow.via-coral.to-electric {
+    --tw-gradient-stops: #E69F00, #D55E00 50%, #0072B2 !important;
+  }
+  body.colorblind-mode .from-coral.to-amberGlow {
+    --tw-gradient-stops: #D55E00, #E69F00 !important;
+  }
+  body.colorblind-mode #a11y-toggle {
+    background: linear-gradient(135deg, #D55E00, #E69F00) !important;
+  }
+  body.colorblind-mode .a11y-switch.on {
+    background: #E69F00 !important;
+  }
+
+  /* Accessibility toggle button */
+  #a11y-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 70;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #ff5e57, #ffa801);
+    color: #0c0f17;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px -8px rgba(0,0,0,0.6);
+    cursor: pointer;
+    border: none;
+    font-size: 22px;
+  }
+
+  #a11y-panel {
+    position: fixed;
+    bottom: 82px;
+    right: 20px;
+    z-index: 70;
+    width: 260px;
+    max-width: calc(100vw - 40px);
+    background: #151a26;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 45px -15px rgba(0,0,0,0.7);
+    padding: 18px;
+    display: none;
+  }
+  #a11y-panel.open { display: block; }
+
+  .a11y-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .a11y-row:last-child { border-bottom: none; }
+
+  .a11y-font-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #e5e7eb;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .a11y-font-btn:hover { background: rgba(255,255,255,0.12); }
+
+  .a11y-switch {
+    width: 40px;
+    height: 22px;
+    border-radius: 9999px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    cursor: pointer;
+    border: none;
+    flex-shrink: 0;
+  }
+  .a11y-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: #e5e7eb;
+    transition: transform 0.2s ease;
+  }
+  .a11y-switch.on { background: #ffa801; }
+  .a11y-switch.on::after { transform: translateX(18px); background: #0c0f17; }
+
+  .speak-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #e5e7eb;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+  .speak-btn:hover { background: rgba(255,255,255,0.12); }
+  .speak-btn.speaking { background: #ffa801; color: #0c0f17; border-color: #ffa801; }
+  body.colorblind-mode .speak-btn.speaking { background: #E69F00 !important; border-color: #E69F00 !important; }
 </style>
 </head>
 <body class="selection:bg-coral selection:text-white">
@@ -130,18 +288,18 @@
 
   <!-- Navigation / Header -->
   <header class="border-b border-white/5 sticky top-0 bg-[#0c0f17]/90 backdrop-blur-md z-40">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-coral to-amberGlow flex items-center justify-center font-display font-bold text-black text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-tr from-coral to-amberGlow flex items-center justify-center font-display font-bold text-black text-xs sm:text-sm flex-shrink-0">
           PUP
         </div>
-        <span class="font-display tracking-widest font-bold text-sm sm:text-base text-gray-200">
+        <span class="font-display tracking-wide sm:tracking-widest font-bold text-xs sm:text-base text-gray-200 truncate">
           SANTA <span class="text-amberGlow font-normal">ROSA</span>
         </span>
       </div>
-      <div class="text-right">
-        <span class="text-xs uppercase tracking-widest text-gray-400 block font-medium">Art Appreciation</span>
-        <span class="text-[11px] text-amberGlow/70">Group 3 · BSIT 3-2</span>
+      <div class="text-right flex-shrink-0">
+        <span class="hidden sm:block text-xs uppercase tracking-widest text-gray-400 font-medium">Art Appreciation</span>
+        <span class="text-[10px] sm:text-[11px] text-amberGlow/70">Group 3 · BSIT 3-2</span>
       </div>
     </div>
   </header>
@@ -156,9 +314,9 @@
       Seeing Santa Rosa Through New Eyes.
     </h2>
     <p class="text-gray-400 text-sm sm:text-base md:text-lg mx-auto leading-relaxed text-center">
-      This blogsite was developed by seven (7) students of the Bachelor of Science in Information Technology
+      This blogsite was developed by six (6) students of the Bachelor of Science in Information Technology
       (BSIT) 3-2 program at the Polytechnic University of the Philippines, Santa Rosa Campus, as a requirement
-      for the course Art Appreciation, Academic Year 2025-2026. It presents ten (10) original photographs,
+      for the course Art Appreciation, Academic Year 2026-2027. It presents ten (10) original photographs,
       taken and owned by the developers themselves, captured around Nuvali and the old museum near the
       Santa Rosa Plaza. Each photograph undergoes an academic evaluation through the stages of
       <strong class="text-gray-200 font-medium">Description, Analysis, and Interpretation</strong>, and is
@@ -181,13 +339,13 @@
       <p class="text-xs uppercase tracking-[0.3em] text-amberGlow/70 mb-3">About the Team</p>
       <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-100">Group 3, BSIT 3-2</h2>
       <p class="text-gray-400 text-sm max-w-3xl mx-auto mt-4 leading-relaxed text-justify">
-        This blogsite was developed by seven (7) BSIT 3-2 students at PUP Santa Rosa as a course requirement
-        for Art Appreciation, Academic Year 2025-2026. All ten photographs were taken and owned by the
+        This blogsite was developed by six (6) BSIT 3-2 students at PUP Santa Rosa as a course requirement
+        for Art Appreciation, Academic Year 2026-2027. All ten photographs were taken and owned by the
         developers themselves, captured around Nuvali and the old museum near the Santa Rosa Plaza.
       </p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-10">
       <!-- Member 1 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
@@ -230,19 +388,12 @@
         </div>
         <p class="text-sm text-gray-200 font-medium">Member Name</p>
       </div>
-      <!-- Member 7 -->
-      <div class="flex flex-col items-center text-center">
-        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
-          Photo
-        </div>
-        <p class="text-sm text-gray-200 font-medium">Member Name</p>
-      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="border-t border-white/5 py-10 text-center text-xs text-gray-500">
-    <p>Art Appreciation Evaluation Model (Ragans, 2005) • Santa Rosa, Laguna Field Study</p>
+    <p>© Art Appreciation Evaluation Blogsite • Santa Rosa, Laguna Field Study</p>
   </footer>
 </div>
 
@@ -255,6 +406,34 @@
   <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl">
 </div>
 
+<!-- ================= ACCESSIBILITY WIDGET ================= -->
+<button id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false" aria-controls="a11y-panel">
+  ♿
+</button>
+
+<div id="a11y-panel" role="dialog" aria-label="Accessibility options">
+  <p class="text-xs uppercase tracking-widest text-amberGlow/70 mb-3">Accessibility</p>
+
+  <div class="a11y-row">
+    <span class="text-sm text-gray-200">Font Size</span>
+    <div class="flex items-center gap-2">
+      <button type="button" id="font-decrease" class="a11y-font-btn" aria-label="Decrease font size">−</button>
+      <button type="button" id="font-reset" class="a11y-font-btn" aria-label="Reset font size" title="Reset font size">↺</button>
+      <button type="button" id="font-increase" class="a11y-font-btn" aria-label="Increase font size">+</button>
+    </div>
+  </div>
+
+  <div class="a11y-row">
+    <span class="text-sm text-gray-200">Color-Blind Mode</span>
+    <button type="button" id="colorblind-toggle" class="a11y-switch" role="switch" aria-checked="false" aria-label="Toggle color-blind friendly colors"></button>
+  </div>
+
+  <div class="a11y-row">
+    <span class="text-sm text-gray-200">Read Entire Page</span>
+    <button type="button" id="speak-intro" class="speak-btn" aria-label="Read the entire page aloud">🔊</button>
+  </div>
+</div>
+
 <!-- ================= SCRIPT ================= -->
 <script>
 /* ======================================================
@@ -262,87 +441,87 @@
 ====================================================== */
 const artworks = [
   {
-    image: "images/photo1.jpg",
-    title: "Photo 1",
-    location: "Location of Photo 1",
-    theory: "Imitationalism",
+    image: "/images/1.jpg",
+    title: "Lor Calma & Partners",
+    location: "Nuvali, Santa Rosa",
+    theory: "Formalism",
     theoryExplanation: "Write here why this photo represents Imitationalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    description: "A tiered, pyramid-like building frame under construction with scaffolding.",
+    analysis: "At first glance, a viewer might mistake the building’s complex, raw form for a byproduct of its ongoing construction. However, closer inspection reveals that the interlocking blocks, exposed scaffolding, and stepped angles are entirely deliberate. Every structural edge is executed with clear intent, serving as a core component of its permanent, innovative architectural design.",
+    interpretation: "The building interprets the relationship between nature and geometry. Its pyramid-like silhouette mimics natural geological formations like terraces or mountainsides, while its clean lines and concrete grid represent human order. It stands as a monument to how modern design can reshape urban horizons by turning heavy, industrial blocks into something that feels light, sculptural, and upward-reaching. ",
   },
   {
-    image: "images/photo2.jpg",
-    title: "Photo 2",
-    location: "Location of Photo 2",
+    image: "/images/2.jpg",
+    title: "Napoleon Abueva",
+    location: "Pramana Residential Park, Greenfield City, Santa Rosa",
     theory: "Formalism",
     theoryExplanation: "Write here why this photo represents Formalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    description: "An abstract monument of interlocking, jagged metal plates rising from a smooth gray pedestal. ",
+    analysis: "The artwork highlights the tension between individual parts and the overall structure, demonstrating how flat rectangular blocks can combine to create a grand, pyramid-like form. This design relies heavily on geometric contrast, pairing the unpredictable randomness of the jagged triangular peak with the solid, predictable stability of the trapezoidal base. ",
+    interpretation: "The artwork symbolizes the harmony between order and chaos. The predictable trapezoidal base represents stability and tradition, while the random, interlocking rectangles at the peak represent the fragmented nature of modern life. It interprets human existence as a balancing act between a solid ground to stand on and the shifting angles of the world above.",
   },
   {
-    image: "images/photo3.jpg",
-    title: "Photo 3",
-    location: "Location of Photo 3",
+    image: "/images/3.jpg",
+    title: "POLIDOMURAL  \"ART CHANGES EVERYTHING\"",
+    location: "One Evotech, Nuvali Boulevard, Santa Rosa",
     theory: "Emotionalism",
-    theoryExplanation: "Write here why this photo represents Emotionalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    theoryExplanation: "Because its primary focus and success lie in its expressive qualities, specifically its ability to evoke strong mood, feeling, and psychological atmosphere in the viewer.",
+    description: "Different kinds of fern sprouting around the wall.",
+    analysis: "Looking at this wall painting is instantly refreshing , even from far away you can feel the crisp touch of nature, but standing in front of it in person is a whole different experience that truly makes you feel the organic energy it generates makes you genuinely connected to the earth.",
+    interpretation: "This artwork serves as a celebration of the connection between modern urban space and the natural world. The rigid building exterior represents the cold, sterile structures of daily life, while the vibrant tropical foliage represents the enduring, refreshing vitality of nature. Instead of a clash, the artwork acts as a bridge that transforms a plain wall into a living landscape. The deeper message is that art has the profound power to reshape our environment, reminding us that we can always bring the restorative, grounding energy of nature right into the heart of  our concrete surroundings.",
   },
   {
-    image: "images/photo4.jpg",
-    title: "Photo 4",
-    location: "Location of Photo 4",
+    image: "/images/4.jpg",
+    title: "Architectural Atrium",
+    location: "Vista Land & Lifespace Inc.",
     theory: "Utilitarianism",
-    theoryExplanation: "Write here why this photo represents Utilitarianism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    theoryExplanation: "Because its primary purpose is practical and functional, it's a commercial shopping mall and public community space designed for utility, shelter, and everyday use.",
+    description: "An umbrella like roof that serves as a protection and a shade to an open air space.",
+    analysis: "The structure atrium blends biophilic design by anchoring its open-air space with a vine wrapped central pillar that contrast industrial steel framing with organic elements like turf lawn and water fountain, overhead, umbrealike tensile canopies diffuse natural sunlight, while overflowing foliage transforms the commercial area into an immersive park like sanctuary.",
+    interpretation: "This architecture celebrates the harmony between commercial spaces and the natural world. By contrasting sleek industrial structure with cascading vines and water features, the design transforms a standard shopping center into a living sanctuary, proving that thoughtful architecture can bring nature’s restorative energy right into our daily public environments.",
   },
   {
-    image: "images/photo5.jpg",
-    title: "Photo 5",
-    location: "Location of Photo 5",
-    theory: "Imitationalism",
+    image: "/images/5.jpg",
+    title: "Mario \"Ram\" Mallari Jr. - The Last Tree",
+    location: "Nuvali, Santa Rosa, Laguna",
+    theory: "Emotionalism",
     theoryExplanation: "Write here why this photo represents Imitationalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    description: "\"The Last Tree\" is a large scrap metal sculpture made by Filipino artist Mario Mallari Jr. for the 2013 Greenstallations exhibit in Nuvali. It shows a huge, robot figure made of old machine parts, kneeling down to gently hold a tiny tree in its hands.",
+    analysis: "The artist combined discarded gears and engine parts to build a robot figure. The main design technique here is contrast: the cold, hard metal of the giant robot stands out against the fragile, natural shape of the small tree. The kneeling pose is stable and draws your eyes straight to the center, focusing directly on the giant's hands protecting the plant. ",
+    interpretation: "This artwork is a warning about the clash between human progress and nature. The metal giant represents industry and technology, which have historically destroyed the environment. However, instead of destroying, the giant acts as a protective caretaker. The deeper message is that the same power and technology we used to build our modern world must now be used to save what is left of nature. It reminds us that fighting climate change is now completely in our hands. ",
   },
   {
-    image: "images/photo6.jpg",
-    title: "Photo 6",
-    location: "Location of Photo 6",
+    image: "/images/6.jpg",
+    title: "Bicycle & Geometric Mural",
+    location: "Ayala Malls, Nuvali, Laguna",
     theory: "Formalism",
-    theoryExplanation: "Write here why this photo represents Formalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    theoryExplanation: "Because its primary focus is on formal elements of design , such as bold geometric shapes, clean lines, vibrant color clocks, and visual rhythm rather than realistic imitation or deep emotional storytelling.",
+    description: "This vibrant and playful public mural features stylized bicycle motifs layered against a dynamic backdrop of bright geometric color blocks, including yellow, teal, and pink, and whimsical patterns. It introduces a lively, energetic, and modern movement to the urban wall space, the artwork celebrates active mobility and creative expression.",
+    analysis: "This mural combines a bold palette of yellow, teal, pink, and black within a clean geometric block, the artwork creates kinetic energy and visual rhythm transforming a plain exterior wall into a vibrant, modern public landmark.",
+    interpretation: "This mural symbolises personal environment consciousness, and community health. By highlighting eco-friendly transport, the composition encourages citizens to adopt sustainable habits and appreciate simpler journeys, Ultimately the installation inspires people to view daily commuting as an opportunity for joy and ecological stewardship.",
   },
   {
-    image: "images/photo7.jpg",
-    title: "Photo 7",
-    location: "Location of Photo 7",
-    theory: "Emotionalism",
-    theoryExplanation: "Write here why this photo represents Emotionalism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
-  },
-  {
-    image: "images/photo8.jpg",
-    title: "Photo 8",
-    location: "Location of Photo 8",
+    image: "/images/7.jpg",
+    title: "Digital Stride 1",
+    location: "Ayala Malls, Nuvali ",
     theory: "Utilitarianism",
-    theoryExplanation: "Write here why this photo represents Utilitarianism.",
-    description: "Write the description here. What is literally seen in the photo?",
-    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
-    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+    theoryExplanation: "The artwork's main purpose is highly practical and functional. It is not meant to be a deep emotional statement or a perfectly realistic portrait. Instead, it is a tool used by a business or property manager to decorate a commercial space, hide an empty storefront, and create a pleasant mood for shoppers. Its true value comes from how well it serves the everyday needs of the retail environment.",
+    description: "\"Digital Stride\" is a large printed vinyl wrap covering a commercial store window and door. It shows a highly stylized digital illustration of a woman walking while looking back over her shoulder, holding a red smartphone and a pink strap against a background of flat, colorful geometric shapes.",
+    analysis: "The design uses a modern commercial illustration style known for exaggerated body proportions, minimal facial features, and flat, solid colors. The artist uses a warm, pastel color palette of pinks, oranges, and earthy browns to create a friendly and approachable mood. There is no shading or 3D depth.",
+    interpretation: "This piece captures the fast paced, connected lifestyle of today's modern consumer. The figure is multitasking by checking her phone while on the move, reflecting how deeply technology is tied to our daily routines. The abstract, colorful background suggests a lively, energetic urban shopping district. It is meant to create a highly idealized, trendy, and upbeat atmosphere that makes the surrounding shopping center feel modern and active.",
   },
   {
-    image: "images/photo9.jpg",
+    image: "/images/8.jpg",
+    title: "Digital Stride 2",
+    location: "Ayala Malls, Nuvali",
+    theory: "Utilitarianism",
+    theoryExplanation: "The purpose of this artwork is highly practical. It is designed to serve a specific function in the real world, which is to decorate a commercial space, attract shoppers, and cover up a window. While it uses pleasing colors and shapes, its primary goal is not to express deep personal emotions or to look perfectly realistic. It is a functional piece of commercial design created to make a storefront look appealing and to serve the business.",
+    description: "\"The Faceless Consumer\" is a large graphic printed mural, likely a vinyl wrap covering a commercial store door and window. It features a modern, stylized, and faceless woman carrying shopping bags, walking against a bright, abstract background filled with large leaves and geometric patterns.",
+    analysis: "The design uses a flat vector art style with bold, solid colors and zero shading. The color palette relies heavily on warm oranges, yellows, and browns to create an energetic and inviting feel, which is balanced by dark green accents. By removing the woman's facial features, the artist makes her a universal figure. The layout is clean and balances organic botanical shapes with playful patterns like polka dots.",
+    interpretation: "This piece represents the modern retail experience and the casual joy of shopping. The faceless woman acts as a blank slate, allowing any passing shopper to easily see themselves in her place. The bright, warm colors and flowing shapes are carefully chosen to create a positive, uplifting mood. It is clearly made to grab the attention of people walking by on the street and make the act of buying things look stylish, effortless, and fun",
+  },
+  {
+    image: "/images/9.jpg",
     title: "Photo 9",
     location: "Location of Photo 9",
     theory: "Imitationalism",
@@ -352,7 +531,7 @@ const artworks = [
     interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
   },
   {
-    image: "images/photo10.jpg",
+    image: "/images/10.jpg",
     title: "Photo 10",
     location: "Location of Photo 10",
     theory: "Formalism",
@@ -364,9 +543,9 @@ const artworks = [
 ];
 
 const STEPS = [
-  { key: "description",    label: "Description",    color: "#ff5e57" },
-  { key: "analysis",       label: "Analysis",       color: "#ffa801" },
-  { key: "interpretation", label: "Interpretation", color: "#575fcf" },
+  { key: "description",    label: "Description" },
+  { key: "analysis",       label: "Analysis" },
+  { key: "interpretation", label: "Interpretation" },
 ];
 
 /* ======================================================
@@ -380,6 +559,144 @@ enterBtn.addEventListener("click", () => {
   introScreen.classList.add("intro-hidden");
   mainContent.classList.add("main-visible");
   setTimeout(() => introScreen.classList.add("hidden"), 1000);
+});
+
+/* ======================================================
+   ACCESSIBILITY: TEXT-TO-SPEECH (READ ALOUD)
+====================================================== */
+let currentSpeakBtn = null;
+
+function toggleSpeak(text, btnEl) {
+  if (!("speechSynthesis" in window)) {
+    alert("Text-to-speech is not supported in this browser.");
+    return;
+  }
+
+  // If this button is already speaking, stop it
+  if (currentSpeakBtn === btnEl) {
+    window.speechSynthesis.cancel();
+    btnEl.classList.remove("speaking");
+    btnEl.textContent = "🔊";
+    currentSpeakBtn = null;
+    return;
+  }
+
+  // Stop any other speech in progress
+  window.speechSynthesis.cancel();
+  if (currentSpeakBtn) {
+    currentSpeakBtn.classList.remove("speaking");
+    currentSpeakBtn.textContent = "🔊";
+  }
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.95;
+  const reset = () => {
+    btnEl.classList.remove("speaking");
+    btnEl.textContent = "🔊";
+    currentSpeakBtn = null;
+  };
+  utterance.onend = reset;
+  utterance.onerror = reset;
+
+  btnEl.classList.add("speaking");
+  btnEl.textContent = "⏸";
+  currentSpeakBtn = btnEl;
+  window.speechSynthesis.speak(utterance);
+}
+
+/* ======================================================
+   ACCESSIBILITY: WIDGET (FONT SIZE, COLOR-BLIND MODE)
+====================================================== */
+const a11yToggle = document.getElementById("a11y-toggle");
+const a11yPanel = document.getElementById("a11y-panel");
+
+a11yToggle.addEventListener("click", () => {
+  const isOpen = a11yPanel.classList.toggle("open");
+  a11yToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+
+document.addEventListener("click", (e) => {
+  if (!a11yPanel.contains(e.target) && !a11yToggle.contains(e.target)) {
+    a11yPanel.classList.remove("open");
+    a11yToggle.setAttribute("aria-expanded", "false");
+  }
+});
+
+// Font size scaling (3 levels)
+const fontScaleClasses = ["", "font-scale-2", "font-scale-3"];
+let fontScaleIndex = 0;
+try {
+  const saved = localStorage.getItem("a11y-font-scale");
+  if (saved !== null) fontScaleIndex = Number(saved);
+} catch (e) {}
+
+function applyFontScale() {
+  fontScaleClasses.forEach((c) => c && document.documentElement.classList.remove(c));
+  const cls = fontScaleClasses[fontScaleIndex];
+  if (cls) document.documentElement.classList.add(cls);
+  try { localStorage.setItem("a11y-font-scale", String(fontScaleIndex)); } catch (e) {}
+}
+applyFontScale();
+
+document.getElementById("font-increase").addEventListener("click", () => {
+  fontScaleIndex = Math.min(fontScaleIndex + 1, fontScaleClasses.length - 1);
+  applyFontScale();
+});
+document.getElementById("font-decrease").addEventListener("click", () => {
+  fontScaleIndex = Math.max(fontScaleIndex - 1, 0);
+  applyFontScale();
+});
+document.getElementById("font-reset").addEventListener("click", () => {
+  fontScaleIndex = 0;
+  applyFontScale();
+});
+
+// Color-blind friendly mode
+const colorblindToggle = document.getElementById("colorblind-toggle");
+let colorblindOn = false;
+try { colorblindOn = localStorage.getItem("a11y-colorblind") === "true"; } catch (e) {}
+
+function applyColorblindMode() {
+  document.body.classList.toggle("colorblind-mode", colorblindOn);
+  colorblindToggle.classList.toggle("on", colorblindOn);
+  colorblindToggle.setAttribute("aria-checked", colorblindOn ? "true" : "false");
+  try { localStorage.setItem("a11y-colorblind", String(colorblindOn)); } catch (e) {}
+}
+applyColorblindMode();
+
+colorblindToggle.addEventListener("click", () => {
+  colorblindOn = !colorblindOn;
+  applyColorblindMode();
+});
+
+// Read the entire page aloud: hero intro, all photo evaluations, and the team section
+const speakIntroBtn = document.getElementById("speak-intro");
+
+function buildFullPageSpeechText() {
+  const parts = [];
+
+  const heroParagraph = document.querySelector("section p");
+  if (heroParagraph) parts.push(heroParagraph.innerText);
+
+  artworks.forEach((art, idx) => {
+    parts.push(
+      `Photo ${idx + 1}. ${art.title}. Location: ${art.location}. ` +
+      `Aesthetic theory: ${art.theory}. ` +
+      `Description. ${art.description} ` +
+      `Analysis. ${art.analysis} ` +
+      `Interpretation. ${art.interpretation} ` +
+      `Why ${art.theory}? ${art.theoryExplanation}`
+    );
+  });
+
+  const aboutParagraph = document.querySelector("#about p:nth-of-type(2)");
+  if (aboutParagraph) parts.push(aboutParagraph.innerText);
+
+  return parts.join(" ");
+}
+
+speakIntroBtn.addEventListener("click", () => {
+  toggleSpeak(buildFullPageSpeechText(), speakIntroBtn);
 });
 
 /* ======================================================
@@ -408,14 +725,19 @@ function renderGallery() {
       </div>
 
       <div class="p-6 sm:p-7">
-        <h3 class="font-display text-xl sm:text-2xl font-bold text-gray-100 mb-1 leading-snug">${art.title}</h3>
+        <div class="flex items-start justify-between gap-3 mb-1">
+          <h3 class="font-display text-xl sm:text-2xl font-bold text-gray-100 leading-snug">${art.title}</h3>
+          <button type="button" class="speak-btn" data-speak-card aria-label="Read this photo's evaluation aloud" title="Read aloud">
+            🔊
+          </button>
+        </div>
         <p class="text-sm text-gray-500 mb-6">${art.location}</p>
 
         <div class="flex items-center gap-1.5 mb-5 step-track rounded-full p-1" data-stepper>
           ${STEPS.map((s, i) => `
             <button data-step="${i}" aria-label="${s.label}"
               class="step-dot flex-1 h-1.5 rounded-full transition-opacity"
-              style="background-color:${s.color}; opacity:${i === 0 ? 1 : 0.25}">
+              style="background-color:var(--step-color-${i}); opacity:${i === 0 ? 1 : 0.25}">
             </button>
           `).join("")}
         </div>
@@ -424,7 +746,7 @@ function renderGallery() {
           ${STEPS.map((s, i) => `
             <button data-step-btn="${i}"
               class="step-label-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${i === 0 ? "text-black border-transparent" : "text-gray-400 border-white/10"}"
-              style="${i === 0 ? `background-color:${s.color}` : ""}">
+              style="${i === 0 ? `background-color:var(--step-color-${i})` : ""}">
               ${i + 1}. ${s.label}
             </button>
           `).join("")}
@@ -433,7 +755,7 @@ function renderGallery() {
         <div data-step-panels>
           ${STEPS.map((s, i) => `
             <div class="step-panel ${i === 0 ? "open" : ""}" data-panel="${i}">
-              <p class="text-[15px] text-gray-300 leading-relaxed pb-5 border-l-2 pl-4" style="border-color:${s.color}">
+              <p class="text-[15px] text-gray-300 leading-relaxed pb-5 border-l-2 pl-4" style="border-color:var(--step-color-${i})">
                 ${art[s.key]}
               </p>
             </div>
@@ -461,9 +783,8 @@ function renderGallery() {
       panels.forEach((p) => p.classList.toggle("open", Number(p.dataset.panel) === stepIndex));
       dots.forEach((d, i) => { d.style.opacity = i === stepIndex ? 1 : 0.25; });
       labelBtns.forEach((b, i) => {
-        const step = STEPS[i];
         if (i === stepIndex) {
-          b.style.backgroundColor = step.color;
+          b.style.backgroundColor = `var(--step-color-${i})`;
           b.classList.add("text-black", "border-transparent");
           b.classList.remove("text-gray-400", "border-white/10");
         } else {
@@ -480,6 +801,19 @@ function renderGallery() {
     labelBtns.forEach((btn, i) => {
       btn.addEventListener("click", () => setStep(i));
     });
+
+    // Read aloud (text-to-speech) for this photo's full evaluation
+    const speakBtn = card.querySelector("[data-speak-card]");
+    const speakText = [
+      art.title + ".",
+      "Location: " + art.location + ".",
+      "Aesthetic theory: " + art.theory + ".",
+      "Description. " + art.description,
+      "Analysis. " + art.analysis,
+      "Interpretation. " + art.interpretation,
+      "Why " + art.theory + "? " + art.theoryExplanation,
+    ].join(" ");
+    speakBtn.addEventListener("click", () => toggleSpeak(speakText, speakBtn));
 
     artGrid.appendChild(card);
   });
