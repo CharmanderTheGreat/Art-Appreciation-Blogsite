@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CHROMA : Santa Rosa in Perspective</title>
+<meta name="description" content="A visual critique of urban identity through mobile lenses, evaluated across the Ragans framework and classic aesthetic theories." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Cinzel', 'serif'],
+          body: ['"Plus Jakarta Sans"', 'sans-serif'],
+        },
+        colors: {
+          canvas: '#0c0f17',
+          surface: '#151a26',
+          card: '#1c2233',
+          coral: '#ff5e57',
+          amberGlow: '#ffa801',
+          electric: '#575fcf',
+          mint: '#05c46b'
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  html { scroll-behavior: smooth; }
+  body { background-color: #0c0f17; color: #e5e7eb; }
+
+  ::selection { background: #ff5e57; color: #ffffff; }
+
+  :focus-visible {
+    outline: 2px solid #ffa801;
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .glow-bg {
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(255,94,87,0.10) 0%, transparent 45%),
+      radial-gradient(circle at 85% 25%, rgba(255,168,1,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 90%, rgba(87,95,207,0.10) 0%, transparent 45%);
+  }
+
+  #intro-screen.intro-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #main-content.main-visible {
+    opacity: 1;
+  }
+
+  .card-hover {
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,168,1,0.35);
+    box-shadow: 0 20px 45px -20px rgba(255,94,87,0.25);
+  }
+
+  .theory-tag-Imitationalism { background: linear-gradient(135deg,#575fcf,#3b4199); }
+  .theory-tag-Formalism      { background: linear-gradient(135deg,#05c46b,#028a4d); }
+  .theory-tag-Emotionalism   { background: linear-gradient(135deg,#ff5e57,#d63c36); }
+  .theory-tag-Utilitarianism { background: linear-gradient(135deg,#ffa801,#c47f00); }
+
+  .step-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1), opacity 0.4s ease;
+  }
+  .step-panel.open {
+    max-height: 600px;
+    opacity: 1;
+  }
+
+  .step-track { background: rgba(255,255,255,0.08); }
+  .step-track-fill { transition: width 0.4s cubic-bezier(0.22,1,0.36,1); }
+
+  .lightbox-enter { animation: lbFade 0.25s ease forwards; }
+  @keyframes lbFade { from { opacity:0; } to { opacity:1; } }
+  .lightbox-img-enter { animation: lbScale 0.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+  @keyframes lbScale { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
+
+  .hidden-card { display: none !important; }
+</style>
+</head>
+<body class="selection:bg-coral selection:text-white">
+
+<!-- ================= CINEMATIC INTRO OVERLAY ================= -->
+<div id="intro-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#090b10] px-6 text-center transition-all duration-1000">
+  <div class="relative mb-6 w-24 h-24 sm:w-28 sm:h-28">
+    <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-amberGlow/30 animate-spin [animation-duration:12s]"></div>
+    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-coral/60 animate-ping absolute inset-4 [animation-duration:3s]"></div>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <span class="font-display font-bold text-2xl tracking-widest text-white">PUP</span>
+    </div>
+  </div>
+  <p class="font-display text-xs tracking-[0.4em] uppercase text-amberGlow/80 mb-2">Art Appreciation Blogsite</p>
+  <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-amberGlow via-coral to-electric mb-4">
+    SANTA ROSA CITY
+  </h1>
+  <p class="text-gray-400 text-sm max-w-md font-light mb-8">
+    A blogsite for art evaluation, built around the city of Santa Rosa, Laguna. One photograph and one perspective at a time.
+  </p>
+  <button id="enter-btn" class="px-8 py-3 rounded-full bg-gradient-to-r from-coral to-amberGlow text-black font-bold text-sm tracking-wider uppercase shadow-lg shadow-coral/20 hover:scale-105 active:scale-95 transition-all cursor-pointer">
+    Enter Gallery
+  </button>
+</div>
+
+<!-- ================= MAIN APP ================= -->
+<div id="main-content" class="min-h-screen opacity-0 transition-opacity duration-1000 glow-bg">
+
+  <!-- Navigation / Header -->
+  <header class="border-b border-white/5 sticky top-0 bg-[#0c0f17]/90 backdrop-blur-md z-40">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-coral to-amberGlow flex items-center justify-center font-display font-bold text-black text-sm">
+          PUP
+        </div>
+        <span class="font-display tracking-widest font-bold text-sm sm:text-base text-gray-200">
+          SANTA <span class="text-amberGlow font-normal">ROSA</span>
+        </span>
+      </div>
+      <div class="text-right">
+        <span class="text-xs uppercase tracking-widest text-gray-400 block font-medium">Art Appreciation</span>
+        <span class="text-[11px] text-amberGlow/70">Group 3 · BSIT 3-2</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="max-w-7xl mx-auto px-6 pt-16 pb-10 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[11px] tracking-wider uppercase text-amberGlow mb-5">
+      <span class="w-1.5 h-1.5 rounded-full bg-amberGlow animate-pulse"></span>
+      Mobile Photography & Critique
+    </div>
+    <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight mb-5 leading-tight">
+      Seeing Santa Rosa Through New Eyes.
+    </h2>
+    <p class="text-gray-400 text-sm sm:text-base md:text-lg mx-auto leading-relaxed text-center">
+      This blogsite was developed by seven (7) students of the Bachelor of Science in Information Technology
+      (BSIT) 3-2 program at the Polytechnic University of the Philippines, Santa Rosa Campus, as a requirement
+      for the course Art Appreciation, Academic Year 2025-2026. It presents ten (10) original photographs,
+      taken and owned by the developers themselves, captured around Nuvali and the old museum near the
+      Santa Rosa Plaza. Each photograph undergoes an academic evaluation through the stages of
+      <strong class="text-gray-200 font-medium">Description, Analysis, and Interpretation</strong>, and is
+      further classified under one of the four
+      <strong class="text-gray-200 font-medium">Aesthetic Theories</strong>: Imitationalism, Formalism,
+      Emotionalism, and Utilitarianism.
+    </p>
+  </section>
+
+  <!-- Gallery Grid -->
+  <main class="max-w-7xl mx-auto px-6 pb-28">
+    <div id="art-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+      <!-- Rendered dynamically via JavaScript -->
+    </div>
+  </main>
+
+  <!-- About the Team -->
+  <section id="about" class="max-w-5xl mx-auto px-6 py-20 border-t border-white/5">
+    <div class="text-center mb-12">
+      <p class="text-xs uppercase tracking-[0.3em] text-amberGlow/70 mb-3">About the Team</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-100">Group 3, BSIT 3-2</h2>
+      <p class="text-gray-400 text-sm max-w-3xl mx-auto mt-4 leading-relaxed text-justify">
+        This blogsite was developed by seven (7) BSIT 3-2 students at PUP Santa Rosa as a course requirement
+        for Art Appreciation, Academic Year 2025-2026. All ten photographs were taken and owned by the
+        developers themselves, captured around Nuvali and the old museum near the Santa Rosa Plaza.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-10">
+      <!-- Member 1 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 2 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 3 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 4 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 5 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 6 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+      <!-- Member 7 -->
+      <div class="flex flex-col items-center text-center">
+        <div class="w-24 h-24 rounded-full bg-card border border-white/10 flex items-center justify-center text-gray-500 text-xs mb-3">
+          Photo
+        </div>
+        <p class="text-sm text-gray-200 font-medium">Member Name</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-10 text-center text-xs text-gray-500">
+    <p>Art Appreciation Evaluation Model (Ragans, 2005) • Santa Rosa, Laguna Field Study</p>
+  </footer>
+</div>
+
+<!-- ================= LIGHTBOX ================= -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-10 bg-black/90">
+  <button id="lightbox-close" aria-label="Close image"
+    class="absolute top-5 right-5 sm:top-8 sm:right-8 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-2xl leading-none transition-colors">
+    &times;
+  </button>
+  <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl">
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+/* ======================================================
+   DATA — Replace image paths and details with your own
+====================================================== */
+const artworks = [
+  {
+    image: "images/photo1.jpg",
+    title: "Photo 1",
+    location: "Location of Photo 1",
+    theory: "Imitationalism",
+    theoryExplanation: "Write here why this photo represents Imitationalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo2.jpg",
+    title: "Photo 2",
+    location: "Location of Photo 2",
+    theory: "Formalism",
+    theoryExplanation: "Write here why this photo represents Formalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo3.jpg",
+    title: "Photo 3",
+    location: "Location of Photo 3",
+    theory: "Emotionalism",
+    theoryExplanation: "Write here why this photo represents Emotionalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo4.jpg",
+    title: "Photo 4",
+    location: "Location of Photo 4",
+    theory: "Utilitarianism",
+    theoryExplanation: "Write here why this photo represents Utilitarianism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo5.jpg",
+    title: "Photo 5",
+    location: "Location of Photo 5",
+    theory: "Imitationalism",
+    theoryExplanation: "Write here why this photo represents Imitationalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo6.jpg",
+    title: "Photo 6",
+    location: "Location of Photo 6",
+    theory: "Formalism",
+    theoryExplanation: "Write here why this photo represents Formalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo7.jpg",
+    title: "Photo 7",
+    location: "Location of Photo 7",
+    theory: "Emotionalism",
+    theoryExplanation: "Write here why this photo represents Emotionalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo8.jpg",
+    title: "Photo 8",
+    location: "Location of Photo 8",
+    theory: "Utilitarianism",
+    theoryExplanation: "Write here why this photo represents Utilitarianism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo9.jpg",
+    title: "Photo 9",
+    location: "Location of Photo 9",
+    theory: "Imitationalism",
+    theoryExplanation: "Write here why this photo represents Imitationalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+  {
+    image: "images/photo10.jpg",
+    title: "Photo 10",
+    location: "Location of Photo 10",
+    theory: "Formalism",
+    theoryExplanation: "Write here why this photo represents Formalism.",
+    description: "Write the description here. What is literally seen in the photo?",
+    analysis: "Write the analysis here. Discuss the elements of art present: line, color, light, and composition.",
+    interpretation: "Write the interpretation here. What mood, message, or story does the photo convey?",
+  },
+];
+
+const STEPS = [
+  { key: "description",    label: "Description",    color: "#ff5e57" },
+  { key: "analysis",       label: "Analysis",       color: "#ffa801" },
+  { key: "interpretation", label: "Interpretation", color: "#575fcf" },
+];
+
+/* ======================================================
+   INTRO → GALLERY TRANSITION
+====================================================== */
+const introScreen = document.getElementById("intro-screen");
+const mainContent = document.getElementById("main-content");
+const enterBtn = document.getElementById("enter-btn");
+
+enterBtn.addEventListener("click", () => {
+  introScreen.classList.add("intro-hidden");
+  mainContent.classList.add("main-visible");
+  setTimeout(() => introScreen.classList.add("hidden"), 1000);
+});
+
+/* ======================================================
+   RENDER: GALLERY CARDS
+====================================================== */
+const artGrid = document.getElementById("art-grid");
+
+function renderGallery() {
+  artGrid.innerHTML = "";
+
+  artworks.forEach((art) => {
+    const card = document.createElement("article");
+    card.className = "card-hover bg-card/70 border border-white/10 rounded-2xl overflow-hidden";
+
+    card.innerHTML = `
+      <div class="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-black cursor-zoom-in group" data-lightbox-trigger>
+        <img src="${art.image}" alt="${art.title}" loading="lazy"
+             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+        <span class="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 text-white text-xs font-medium bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">
+          Click to enlarge
+        </span>
+        <span class="absolute top-3 right-3 sm:top-4 sm:right-4 theory-tag-${art.theory} text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
+          ${art.theory}
+        </span>
+      </div>
+
+      <div class="p-6 sm:p-7">
+        <h3 class="font-display text-xl sm:text-2xl font-bold text-gray-100 mb-1 leading-snug">${art.title}</h3>
+        <p class="text-sm text-gray-500 mb-6">${art.location}</p>
+
+        <div class="flex items-center gap-1.5 mb-5 step-track rounded-full p-1" data-stepper>
+          ${STEPS.map((s, i) => `
+            <button data-step="${i}" aria-label="${s.label}"
+              class="step-dot flex-1 h-1.5 rounded-full transition-opacity"
+              style="background-color:${s.color}; opacity:${i === 0 ? 1 : 0.25}">
+            </button>
+          `).join("")}
+        </div>
+
+        <div class="flex flex-wrap gap-2 mb-5" data-step-labels>
+          ${STEPS.map((s, i) => `
+            <button data-step-btn="${i}"
+              class="step-label-btn text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${i === 0 ? "text-black border-transparent" : "text-gray-400 border-white/10"}"
+              style="${i === 0 ? `background-color:${s.color}` : ""}">
+              ${i + 1}. ${s.label}
+            </button>
+          `).join("")}
+        </div>
+
+        <div data-step-panels>
+          ${STEPS.map((s, i) => `
+            <div class="step-panel ${i === 0 ? "open" : ""}" data-panel="${i}">
+              <p class="text-[15px] text-gray-300 leading-relaxed pb-5 border-l-2 pl-4" style="border-color:${s.color}">
+                ${art[s.key]}
+              </p>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="mt-1 pt-5 border-t border-white/10">
+          <p class="text-xs font-semibold text-amberGlow/70 mb-1 uppercase tracking-wide">Why ${art.theory}?</p>
+          <p class="text-sm text-gray-400 leading-relaxed italic">${art.theoryExplanation}</p>
+        </div>
+      </div>
+    `;
+
+    // Lightbox trigger
+    card.querySelector("[data-lightbox-trigger]").addEventListener("click", () => {
+      openLightbox(art.image, art.title);
+    });
+
+    // Stepper interactivity
+    const panels = card.querySelectorAll("[data-panel]");
+    const dots = card.querySelectorAll(".step-dot");
+    const labelBtns = card.querySelectorAll(".step-label-btn");
+
+    function setStep(stepIndex) {
+      panels.forEach((p) => p.classList.toggle("open", Number(p.dataset.panel) === stepIndex));
+      dots.forEach((d, i) => { d.style.opacity = i === stepIndex ? 1 : 0.25; });
+      labelBtns.forEach((b, i) => {
+        const step = STEPS[i];
+        if (i === stepIndex) {
+          b.style.backgroundColor = step.color;
+          b.classList.add("text-black", "border-transparent");
+          b.classList.remove("text-gray-400", "border-white/10");
+        } else {
+          b.style.backgroundColor = "";
+          b.classList.remove("text-black", "border-transparent");
+          b.classList.add("text-gray-400", "border-white/10");
+        }
+      });
+    }
+
+    card.querySelectorAll("[data-step]").forEach((dot) => {
+      dot.addEventListener("click", () => setStep(Number(dot.dataset.step)));
+    });
+    labelBtns.forEach((btn, i) => {
+      btn.addEventListener("click", () => setStep(i));
+    });
+
+    artGrid.appendChild(card);
+  });
+}
+
+/* ======================================================
+   LIGHTBOX
+====================================================== */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxClose = document.getElementById("lightbox-close");
+
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.classList.remove("hidden");
+  lightbox.classList.add("flex", "lightbox-enter");
+  lightboxImg.classList.add("lightbox-img-enter");
+  document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+  lightbox.classList.add("hidden");
+  lightbox.classList.remove("flex", "lightbox-enter");
+  lightboxImg.classList.remove("lightbox-img-enter");
+  document.body.style.overflow = "";
+}
+
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+
+/* ======================================================
+   INIT
+====================================================== */
+renderGallery();
+</script>
+
+</body>
+</html>
