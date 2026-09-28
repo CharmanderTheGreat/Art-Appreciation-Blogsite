@@ -14,6 +14,7 @@ A lightweight, static blog platform created as a collaborative academic project 
 * *[Steven James P. Leosala]*
 * *[Avryl Rohmer T. Marapoc]*
 * *[Dwayne Lawrence SF. San Juan]*
+* *[Nikko J. Agcaoili]*
 
 
 
