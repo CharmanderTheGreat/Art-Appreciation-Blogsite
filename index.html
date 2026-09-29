@@ -37,7 +37,7 @@
 
 <style>
   html { scroll-behavior: smooth; overflow-x: hidden; }
-  body { background-color: #0c0f17; color: #e5e7eb; overflow-x: hidden; }
+  body { background-color: #0c0f17; color: #e5e7eb; overflow-x: hidden; transition: background-color 0.4s ease, color 0.4s ease; }
 
   ::selection { background: #ff5e57; color: #ffffff; }
 
@@ -67,7 +67,7 @@
   }
 
   .card-hover {
-    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s ease, box-shadow 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.4s ease;
   }
   .card-hover:hover {
     transform: translateY(-5px);
@@ -100,6 +100,124 @@
   @keyframes lbScale { from { opacity:0; transform:scale(0.96); } to { opacity:1; transform:scale(1); } }
 
   .hidden-card { display: none !important; }
+
+  /* ============ ICON BUTTONS (replacing emojis) ============ */
+  .icon-btn svg { width: 18px; height: 18px; }
+
+  /* ============ LIGHT / DARK MODE ============ */
+  #theme-toggle {
+    position: fixed;
+    bottom: 84px;
+    right: 20px;
+    z-index: 70;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    background: #151a26;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -8px rgba(0,0,0,0.6);
+    overflow: hidden;
+    transition: background-color 0.4s ease, border-color 0.4s ease, opacity 0.6s ease;
+  }
+
+  .theme-icon { width: 26px; height: 26px; overflow: visible; }
+  .theme-icon .sun-group,
+  .theme-icon .moon-group {
+    transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: 12px 12px;
+  }
+
+  /* Default state = dark mode active: moon visible, sun hidden */
+  .theme-icon .sun-group { opacity: 0; transform: rotate(90deg) scale(0.4); }
+  .theme-icon .moon-group { opacity: 1; transform: rotate(0deg) scale(1); }
+
+  /* Light mode active: sun visible, moon hidden */
+  body.light-mode .theme-icon .sun-group { opacity: 1; transform: rotate(0deg) scale(1); }
+  body.light-mode .theme-icon .moon-group { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+
+  @keyframes cloud-drift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(1.4px); }
+  }
+  body.light-mode .theme-icon .cloud { animation: cloud-drift 4s ease-in-out infinite; }
+
+  @keyframes sun-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  body.light-mode .theme-icon .sun-rays {
+    transform-origin: 12px 12px;
+    animation: sun-spin 24s linear infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+  .theme-icon .star-1 { animation: twinkle 2.2s ease-in-out infinite; }
+  .theme-icon .star-2 { animation: twinkle 2.6s ease-in-out infinite 0.3s; }
+  .theme-icon .star-3 { animation: twinkle 1.9s ease-in-out infinite 0.6s; }
+
+  /* Light theme palette, applied on top of the dark defaults above */
+  body.light-mode {
+    background-color: #f7f3ea !important;
+    color: #1f2430 !important;
+  }
+  body.light-mode .glow-bg { background-image: none !important; }
+  body.light-mode header {
+    background-color: rgba(247,243,234,0.92) !important;
+    border-color: rgba(0,0,0,0.08) !important;
+  }
+  body.light-mode .card-hover,
+  body.light-mode .bg-card,
+  body.light-mode .bg-card\/70 {
+    background-color: #ffffff !important;
+  }
+  body.light-mode .border-white\/5 { border-color: rgba(0,0,0,0.06) !important; }
+  body.light-mode .border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+  body.light-mode .border-white\/15 { border-color: rgba(0,0,0,0.12) !important; }
+  body.light-mode .border-white\/20 { border-color: rgba(0,0,0,0.16) !important; }
+  body.light-mode .bg-white\/5 { background-color: rgba(0,0,0,0.04) !important; }
+
+  body.light-mode .text-gray-100,
+  body.light-mode .text-gray-200 { color: #1f2430 !important; }
+  body.light-mode .text-gray-300 { color: #3f4557 !important; }
+  body.light-mode .text-gray-400 { color: #656d80 !important; }
+  body.light-mode .text-gray-500 { color: #8891a3 !important; }
+
+  body.light-mode #a11y-panel {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.1) !important;
+    box-shadow: 0 20px 45px -15px rgba(0,0,0,0.25) !important;
+  }
+  body.light-mode .a11y-row { border-color: rgba(0,0,0,0.08) !important; }
+  body.light-mode .a11y-font-btn,
+  body.light-mode .speak-btn {
+    background: rgba(0,0,0,0.04) !important;
+    border-color: rgba(0,0,0,0.12) !important;
+    color: #1f2430 !important;
+  }
+  body.light-mode .a11y-switch {
+    background: rgba(0,0,0,0.1) !important;
+    border-color: rgba(0,0,0,0.25) !important;
+  }
+  body.light-mode .a11y-switch::after {
+    background: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  body.light-mode .step-track { background: rgba(0,0,0,0.06) !important; }
+  body.light-mode #theme-toggle {
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.1) !important;
+    box-shadow: 0 10px 25px -8px rgba(0,0,0,0.2) !important;
+  }
+  body.light-mode #a11y-toggle {
+    box-shadow: 0 10px 25px -8px rgba(0,0,0,0.3) !important;
+  }
 
   /* ============ ACCESSIBILITY ============ */
 
@@ -177,13 +295,26 @@
     box-shadow: 0 10px 25px -8px rgba(0,0,0,0.6);
     cursor: pointer;
     border: none;
-    font-size: 22px;
+    transition: opacity 0.6s ease;
   }
+  #a11y-toggle svg { width: 24px; height: 24px; }
+
+  /* Hide floating buttons until user clicks "Enter Gallery" */
+  body:not(.entered) #theme-toggle,
+  body:not(.entered) #a11y-toggle,
+  body:not(.entered) #a11y-panel {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Lock scroll while intro is showing */
+  html:has(body:not(.entered)) { overflow: hidden; }
 
   #a11y-panel {
     position: fixed;
     bottom: 82px;
-    right: 20px;
+    right: 82px;
     z-index: 70;
     width: 260px;
     max-width: calc(100vw - 40px);
@@ -214,8 +345,12 @@
     color: #e5e7eb;
     font-weight: 700;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .a11y-font-btn:hover { background: rgba(255,255,255,0.12); }
+  .a11y-font-btn svg { width: 14px; height: 14px; }
 
   .a11y-switch {
     width: 40px;
@@ -224,7 +359,7 @@
     background: rgba(255,255,255,0.15);
     position: relative;
     cursor: pointer;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.2);
     flex-shrink: 0;
   }
   .a11y-switch::after {
@@ -253,7 +388,6 @@
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
-    font-size: 13px;
   }
   .speak-btn:hover { background: rgba(255,255,255,0.12); }
   .speak-btn.speaking { background: #ffa801; color: #0c0f17; border-color: #ffa801; }
@@ -345,7 +479,7 @@
       </p>
     </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-10">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-10">
       <!-- Member 1 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
@@ -384,7 +518,7 @@
       <!-- Member 6 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
-          <img src="images/mem6.jpg" alt="Nikko J. Agcaoili" class="w-full h-full object-cover">
+          <img src="images/mem6.PNG" alt="Nikko J. Agcaoili" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Nikko J. Agcaoili</p>
       </div>
@@ -400,15 +534,53 @@
 <!-- ================= LIGHTBOX ================= -->
 <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-10 bg-black/90">
   <button id="lightbox-close" aria-label="Close image"
-    class="absolute top-5 right-5 sm:top-8 sm:right-8 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-2xl leading-none transition-colors">
-    &times;
+    class="absolute top-5 right-5 sm:top-8 sm:right-8 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="18" y1="6" x2="6" y2="18"/>
+    </svg>
   </button>
   <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-full object-contain rounded-md shadow-2xl">
 </div>
 
+<!-- ================= LIGHT / DARK MODE TOGGLE ================= -->
+<button id="theme-toggle" aria-label="Toggle light or dark mode" aria-pressed="false" title="Toggle light/dark mode">
+  <svg class="theme-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sun + clouds (light mode) -->
+    <g class="sun-group">
+      <g class="sun-rays" stroke="#ffa801" stroke-width="1.6" stroke-linecap="round">
+        <line x1="12" y1="1.5" x2="12" y2="3.5"/>
+        <line x1="12" y1="20.5" x2="12" y2="22.5"/>
+        <line x1="1.5" y1="12" x2="3.5" y2="12"/>
+        <line x1="20.5" y1="12" x2="22.5" y2="12"/>
+        <line x1="4.4" y1="4.4" x2="5.8" y2="5.8"/>
+        <line x1="18.2" y1="18.2" x2="19.6" y2="19.6"/>
+        <line x1="4.4" y1="19.6" x2="5.8" y2="18.2"/>
+        <line x1="18.2" y1="5.8" x2="19.6" y2="4.4"/>
+      </g>
+      <circle cx="12" cy="12" r="5" fill="#ffa801"/>
+      <path class="cloud" d="M6.5 17.5c-1.66 0-3-1.34-3-3 0-1.5 1.1-2.74 2.53-2.96.4-1.9 2.08-3.34 4.1-3.34 2.14 0 3.9 1.6 4.18 3.67 1.68.2 2.99 1.63 2.99 3.33 0 1.66-1.34 3-3 3H6.5z" fill="#eef1f5" stroke="#c7ccd4" stroke-width="0.5"/>
+    </g>
+    <!-- Moon + stars (dark mode) -->
+    <g class="moon-group">
+      <path class="moon" d="M20 13.2A8.6 8.6 0 1 1 11.4 3.6a7 7 0 0 0 8.6 9.6z" fill="#e2e8f0"/>
+      <circle class="star star-1" cx="5" cy="6" r="0.8" fill="#f8fafc"/>
+      <circle class="star star-2" cx="4" cy="14" r="0.55" fill="#f8fafc"/>
+      <circle class="star star-3" cx="8.5" cy="3.5" r="0.45" fill="#f8fafc"/>
+    </g>
+  </svg>
+</button>
+
 <!-- ================= ACCESSIBILITY WIDGET ================= -->
 <button id="a11y-toggle" aria-label="Accessibility options" aria-expanded="false" aria-controls="a11y-panel">
-  ♿
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="4" r="1.6" fill="currentColor" stroke="none"/>
+    <path d="M5 8.5c2.2.9 4.6 1.4 7 1.4s4.8-.5 7-1.4"/>
+    <path d="M12 9.9V21"/>
+    <path d="M8.5 21l1.5-6.5"/>
+    <path d="M15.5 21L14 14.5"/>
+    <path d="M8 13.5l4-1 4 1"/>
+  </svg>
 </button>
 
 <div id="a11y-panel" role="dialog" aria-label="Accessibility options">
@@ -417,9 +589,18 @@
   <div class="a11y-row">
     <span class="text-sm text-gray-200">Font Size</span>
     <div class="flex items-center gap-2">
-      <button type="button" id="font-decrease" class="a11y-font-btn" aria-label="Decrease font size">−</button>
-      <button type="button" id="font-reset" class="a11y-font-btn" aria-label="Reset font size" title="Reset font size">↺</button>
-      <button type="button" id="font-increase" class="a11y-font-btn" aria-label="Increase font size">+</button>
+      <button type="button" id="font-decrease" class="a11y-font-btn" aria-label="Decrease font size">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button type="button" id="font-reset" class="a11y-font-btn" aria-label="Reset font size" title="Reset font size">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/>
+          <polyline points="3 3 3 8 8 8"/>
+        </svg>
+      </button>
+      <button type="button" id="font-increase" class="a11y-font-btn" aria-label="Increase font size">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
     </div>
   </div>
 
@@ -430,7 +611,11 @@
 
   <div class="a11y-row">
     <span class="text-sm text-gray-200">Read Entire Page</span>
-    <button type="button" id="speak-intro" class="speak-btn" aria-label="Read the entire page aloud">🔊</button>
+    <button type="button" id="speak-intro" class="speak-btn icon-btn" aria-label="Read the entire page aloud">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"/>
+      </svg>
+    </button>
   </div>
 </div>
 
@@ -548,6 +733,17 @@ const STEPS = [
   { key: "interpretation", label: "Interpretation" },
 ];
 
+// Inline SVG icons used by the speak buttons (swapped based on state)
+const ICON_PLAY = `
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"/>
+  </svg>`;
+const ICON_PAUSE = `
+  <svg viewBox="0 0 24 24" fill="currentColor">
+    <rect x="6" y="4" width="4" height="16" rx="1"/>
+    <rect x="14" y="4" width="4" height="16" rx="1"/>
+  </svg>`;
+
 /* ======================================================
    INTRO → GALLERY TRANSITION
 ====================================================== */
@@ -556,9 +752,29 @@ const mainContent = document.getElementById("main-content");
 const enterBtn = document.getElementById("enter-btn");
 
 enterBtn.addEventListener("click", () => {
+  document.body.classList.add("entered");
   introScreen.classList.add("intro-hidden");
   mainContent.classList.add("main-visible");
   setTimeout(() => introScreen.classList.add("hidden"), 1000);
+});
+
+/* ======================================================
+   LIGHT / DARK MODE TOGGLE
+====================================================== */
+const themeToggle = document.getElementById("theme-toggle");
+let lightModeOn = false;
+try { lightModeOn = localStorage.getItem("theme-light") === "true"; } catch (e) {}
+
+function applyTheme() {
+  document.body.classList.toggle("light-mode", lightModeOn);
+  themeToggle.setAttribute("aria-pressed", lightModeOn ? "true" : "false");
+  try { localStorage.setItem("theme-light", String(lightModeOn)); } catch (e) {}
+}
+applyTheme();
+
+themeToggle.addEventListener("click", () => {
+  lightModeOn = !lightModeOn;
+  applyTheme();
 });
 
 /* ======================================================
@@ -576,7 +792,7 @@ function toggleSpeak(text, btnEl) {
   if (currentSpeakBtn === btnEl) {
     window.speechSynthesis.cancel();
     btnEl.classList.remove("speaking");
-    btnEl.textContent = "🔊";
+    btnEl.innerHTML = ICON_PLAY;
     currentSpeakBtn = null;
     return;
   }
@@ -585,21 +801,21 @@ function toggleSpeak(text, btnEl) {
   window.speechSynthesis.cancel();
   if (currentSpeakBtn) {
     currentSpeakBtn.classList.remove("speaking");
-    currentSpeakBtn.textContent = "🔊";
+    currentSpeakBtn.innerHTML = ICON_PLAY;
   }
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.rate = 0.95;
   const reset = () => {
     btnEl.classList.remove("speaking");
-    btnEl.textContent = "🔊";
+    btnEl.innerHTML = ICON_PLAY;
     currentSpeakBtn = null;
   };
   utterance.onend = reset;
   utterance.onerror = reset;
 
   btnEl.classList.add("speaking");
-  btnEl.textContent = "⏸";
+  btnEl.innerHTML = ICON_PAUSE;
   currentSpeakBtn = btnEl;
   window.speechSynthesis.speak(utterance);
 }
@@ -727,8 +943,8 @@ function renderGallery() {
       <div class="p-6 sm:p-7">
         <div class="flex items-start justify-between gap-3 mb-1">
           <h3 class="font-display text-xl sm:text-2xl font-bold text-gray-100 leading-snug">${art.title}</h3>
-          <button type="button" class="speak-btn" data-speak-card aria-label="Read this photo's evaluation aloud" title="Read aloud">
-            🔊
+          <button type="button" class="speak-btn icon-btn" data-speak-card aria-label="Read this photo's evaluation aloud" title="Read aloud">
+            ${ICON_PLAY}
           </button>
         </div>
         <p class="text-sm text-gray-500 mb-6">${art.location}</p>
