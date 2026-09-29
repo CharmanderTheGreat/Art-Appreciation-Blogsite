@@ -10,8 +10,8 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Santa Rosa City | Art Appreciation Blogsite - PUP Santa Rosa" />
 <meta property="og:description" content="Ten original photographs of Santa Rosa, Laguna, evaluated through Description, Analysis, and Interpretation." />
-<meta property="og:url" content="https://charmanderthegreat.github.io/YOUR-REPO-NAME/" />
-<meta property="og:image" content="https://charmanderthegreat.github.io/YOUR-REPO-NAME/images/1.jpg" />
+<meta property="og:url" content="https://charmanderthegreat.github.io/Art-Appreciation-Blogsite/" />
+<meta property="og:image" content="https://charmanderthegreat.github.io/Art-Appreciation-Blogsite/images/1.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <!-- Fonts -->
@@ -789,6 +789,38 @@ themeToggle.addEventListener("click", () => {
    ACCESSIBILITY: TEXT-TO-SPEECH (READ ALOUD)
 ====================================================== */
 let currentSpeakBtn = null;
+let speakSession = 0;
+
+// Split long text into short chunks (browsers cut off long utterances)
+function splitIntoChunks(text, maxLen = 180) {
+  const parts = text.replace(/\s+/g, " ").trim().split(/(?<=[.!?,;:])\s+/);
+  const chunks = [];
+  let buf = "";
+  parts.forEach((p) => {
+    if (buf && (buf + " " + p).length > maxLen) {
+      chunks.push(buf);
+      buf = p;
+    } else {
+      buf = buf ? buf + " " + p : p;
+    }
+  });
+  if (buf) chunks.push(buf);
+  return chunks;
+}
+
+function resetSpeakBtn(btn) {
+  btn.classList.remove("speaking");
+  btn.innerHTML = ICON_PLAY;
+}
+
+function stopSpeaking() {
+  speakSession++;
+  window.speechSynthesis.cancel();
+  if (currentSpeakBtn) {
+    resetSpeakBtn(currentSpeakBtn);
+    currentSpeakBtn = null;
+  }
+}
 
 function toggleSpeak(text, btnEl) {
   if (!("speechSynthesis" in window)) {
@@ -796,36 +828,44 @@ function toggleSpeak(text, btnEl) {
     return;
   }
 
-  // If this button is already speaking, stop it
+  // Same button clicked again: stop
   if (currentSpeakBtn === btnEl) {
-    window.speechSynthesis.cancel();
-    btnEl.classList.remove("speaking");
-    btnEl.innerHTML = ICON_PLAY;
-    currentSpeakBtn = null;
+    stopSpeaking();
     return;
   }
 
-  // Stop any other speech in progress
-  window.speechSynthesis.cancel();
-  if (currentSpeakBtn) {
-    currentSpeakBtn.classList.remove("speaking");
-    currentSpeakBtn.innerHTML = ICON_PLAY;
-  }
+  // Stop anything else in progress
+  stopSpeaking();
 
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.95;
-  const reset = () => {
-    btnEl.classList.remove("speaking");
-    btnEl.innerHTML = ICON_PLAY;
-    currentSpeakBtn = null;
-  };
-  utterance.onend = reset;
-  utterance.onerror = reset;
+  const session = speakSession;
+  const chunks = splitIntoChunks(text);
+  let i = 0;
 
+  currentSpeakBtn = btnEl;
   btnEl.classList.add("speaking");
   btnEl.innerHTML = ICON_PAUSE;
-  currentSpeakBtn = btnEl;
-  window.speechSynthesis.speak(utterance);
+
+  function next() {
+    if (session !== speakSession) return; // cancelled or replaced
+    if (i >= chunks.length) {
+      resetSpeakBtn(btnEl);
+      currentSpeakBtn = null;
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(chunks[i++]);
+    u.lang = "en-US";
+    u.rate = 0.95;
+    u.onend = next;
+    u.onerror = (e) => {
+      if (session !== speakSession) return;
+      if (e.error === "interrupted" || e.error === "canceled") return;
+      next();
+    };
+    window.speechSynthesis.speak(u);
+  }
+
+  // small delay so cancel() finishes before speak() (Chrome bug)
+  setTimeout(next, 100);
 }
 
 /* ======================================================
