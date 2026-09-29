@@ -109,7 +109,7 @@
 
   .hidden-card { display: none !important; }
 
-  /* ============ ICON BUTTONS (replacing emojis) ============ */
+  /* ============ ICON BUTTONS ============ */
   .icon-btn svg { width: 18px; height: 18px; }
 
   /* ============ LIGHT / DARK MODE ============ */
@@ -139,11 +139,9 @@
     transform-origin: 12px 12px;
   }
 
-  /* Default state = dark mode active: moon visible, sun hidden */
   .theme-icon .sun-group { opacity: 0; transform: rotate(90deg) scale(0.4); }
   .theme-icon .moon-group { opacity: 1; transform: rotate(0deg) scale(1); }
 
-  /* Light mode active: sun visible, moon hidden */
   body.light-mode .theme-icon .sun-group { opacity: 1; transform: rotate(0deg) scale(1); }
   body.light-mode .theme-icon .moon-group { opacity: 0; transform: rotate(-90deg) scale(0.4); }
 
@@ -170,7 +168,6 @@
   .theme-icon .star-2 { animation: twinkle 2.6s ease-in-out infinite 0.3s; }
   .theme-icon .star-3 { animation: twinkle 1.9s ease-in-out infinite 0.6s; }
 
-  /* Light theme palette, applied on top of the dark defaults above */
   body.light-mode {
     background-color: #f7f3ea !important;
     color: #1f2430 !important;
@@ -228,12 +225,9 @@
   }
 
   /* ============ ACCESSIBILITY ============ */
-
-  /* Font size scaling */
   html.font-scale-2 { font-size: 113%; }
   html.font-scale-3 { font-size: 127%; }
 
-  /* Step colors as CSS variables so Color-Blind Mode can safely override them */
   :root {
     --step-color-0: #ff5e57;
     --step-color-1: #ffa801;
@@ -249,8 +243,6 @@
   body.colorblind-mode .theory-tag-Emotionalism   { background: linear-gradient(135deg,#D55E00,#a24700); }
   body.colorblind-mode .theory-tag-Utilitarianism { background: linear-gradient(135deg,#E69F00,#b57c00); }
 
-  /* Colorblind-safe palette applied site-wide (Okabe-Ito palette):
-     coral -> vermillion #D55E00, amberGlow -> orange #E69F00, electric -> blue #0072B2 */
   body.colorblind-mode .text-amberGlow,
   body.colorblind-mode .text-amberGlow\/80,
   body.colorblind-mode .text-amberGlow\/70 {
@@ -272,7 +264,6 @@
     background: #D55E00 !important;
     color: #ffffff !important;
   }
-  /* Gradient combinations used across the intro, buttons, and logo badge */
   body.colorblind-mode .from-amberGlow.via-coral.to-electric {
     --tw-gradient-stops: #E69F00, #D55E00 50%, #0072B2 !important;
   }
@@ -286,7 +277,6 @@
     background: #E69F00 !important;
   }
 
-  /* Accessibility toggle button */
   #a11y-toggle {
     position: fixed;
     bottom: 20px;
@@ -307,7 +297,6 @@
   }
   #a11y-toggle svg { width: 24px; height: 24px; }
 
-  /* Hide floating buttons until user clicks "Enter Gallery" */
   body:not(.entered) #theme-toggle,
   body:not(.entered) #a11y-toggle,
   body:not(.entered) #a11y-panel {
@@ -316,7 +305,6 @@
     pointer-events: none;
   }
 
-  /* Lock scroll while intro is showing */
   html:has(body:not(.entered)) { overflow: hidden; }
 
   #a11y-panel {
@@ -452,31 +440,31 @@
       <span class="w-1.5 h-1.5 rounded-full bg-amberGlow animate-pulse"></span>
       Mobile Photography & Critique
     </div>
-    <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight mb-5 leading-tight">
+    <h2 class="font-display text-4xl sm:text-6xl font-bold tracking-tight mb-5 leading-tight max-w-4xl mx-auto">
       Seeing Santa Rosa Through New Eyes.
     </h2>
-        <p class="text-gray-400 text-sm sm:text-base md:text-lg max-w-3xl mx-auto leading-relaxed text-center font-normal">
-  This blogsite was developed by
-  <span class="text-amberGlow font-medium tracking-wide">six (6) students</span> of the
-  BSIT 3-2 program at the
-  Polytechnic University of the Philippines, Santa Rosa Campus,
-  as a requirement for
-  <span class="text-amberGlow font-medium tracking-wide">Art Appreciation</span>,
-  Academic Year 2026–2027.
-  It presents
-  <span class="text-amberGlow font-medium tracking-wide">ten (10) original photographs</span>,
-  taken and owned by the developers themselves, captured around
-  Nuvali and the old museum near the Santa Rosa Plaza.
-  Each photograph is evaluated through
-  <span class="text-amberGlow font-medium">Description</span>,
-  <span class="text-amberGlow font-medium">Analysis</span>, and
-  <span class="text-amberGlow font-medium">Interpretation</span>,
-  then classified under one of the four Aesthetic Theories:
-  <span class="text-amberGlow italic font-normal">Imitationalism</span>,
-  <span class="text-amberGlow italic font-normal">Formalism</span>,
-  <span class="text-amberGlow italic font-normal">Emotionalism</span>, and
-  <span class="text-amberGlow italic font-normal">Utilitarianism</span>.
-</p>
+    <p class="text-gray-400 text-sm sm:text-base md:text-lg max-w-4xl mx-auto leading-relaxed text-center font-normal">
+      This blogsite was developed by
+      <span class="text-amberGlow font-medium tracking-wide">six (6) students</span> of the
+      BSIT 3-2 program at the
+      Polytechnic University of the Philippines, Santa Rosa Campus,
+      as a requirement for
+      <span class="text-amberGlow font-medium tracking-wide">Art Appreciation</span>,
+      Academic Year 2026–2027.
+      It presents
+      <span class="text-amberGlow font-medium tracking-wide">ten (10) original photographs</span>,
+      taken and owned by the developers themselves, captured around
+      Nuvali and the old museum near the Santa Rosa Plaza.
+      Each photograph is evaluated through
+      <span class="text-amberGlow font-medium">Description</span>,
+      <span class="text-amberGlow font-medium">Analysis</span>, and
+      <span class="text-amberGlow font-medium">Interpretation</span>,
+      then classified under one of the four Aesthetic Theories:
+      <span class="text-amberGlow italic font-normal">Imitationalism</span>,
+      <span class="text-amberGlow italic font-normal">Formalism</span>,
+      <span class="text-amberGlow italic font-normal">Emotionalism</span>, and
+      <span class="text-amberGlow italic font-normal">Utilitarianism</span>.
+    </p>
   </section>
 
   <!-- Gallery Grid -->
@@ -486,15 +474,18 @@
     </div>
   </main>
 
+  <!-- ================= DIVIDER (Laging kasing-lapad ng Gallery Grid) ================= -->
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="border-t border-white/10"></div>
+  </div>
+
   <!-- About the Team -->
-  <section id="about" class="max-w-5xl mx-auto px-6 py-20 border-t border-white/5">
+  <section id="about" class="max-w-5xl mx-auto px-6 py-20">
     <div class="text-center mb-12">
       <p class="text-xs uppercase tracking-[0.3em] text-amberGlow/70 mb-3">About the Team</p>
       <h2 class="font-display text-3xl sm:text-4xl font-bold text-gray-100">Group 3, BSIT 3-2</h2>
-      <p class="text-gray-400 text-sm max-w-3xl mx-auto mt-4 leading-relaxed text-justify">
-        This blogsite was developed by six (6) BSIT 3-2 students at PUP Santa Rosa as a course requirement
-        for Art Appreciation, Academic Year 2026-2027. All ten photographs were taken and owned by the
-        developers themselves, captured around Nuvali and the old museum near the Santa Rosa Plaza.
+      <p class="text-gray-400 text-sm max-w-xl mx-auto mt-4 leading-relaxed text-center">
+        A collaborative study by Group 3, combining analytical observation with digital presentation to explore visual art across our city’s public and historical spaces.
       </p>
     </div>
 
@@ -505,47 +496,63 @@
           <img src="images/mem1.jpg" alt="Albert Lawrence B. Robiñol" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Albert Lawrence B. Robiñol</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Lead Developer</span>
       </div>
+
       <!-- Member 2 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
           <img src="images/mem2.jpg" alt="Luke Edward G. Schofield" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Luke Edward G. Schofield</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Associate Developer</span>
       </div>
+
       <!-- Member 3 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
           <img src="images/mem3.jpg" alt="Steven James P. Leosala" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Steven James P. Leosala</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Field Photography</span>
       </div>
+
       <!-- Member 4 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
           <img src="images/mem4.jpg" alt="Dwayne Lawrence SF. San Juan" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Dwayne Lawrence SF. San Juan</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Art Critique & Analysis</span>
       </div>
+
       <!-- Member 5 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
           <img src="images/mem5.jpeg" alt="Avryl Rohmer T. Marapoc" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Avryl Rohmer T. Marapoc</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Quality Assurance (QA)</span>
       </div>
+
       <!-- Member 6 -->
       <div class="flex flex-col items-center text-center">
         <div class="w-24 h-24 rounded-full overflow-hidden bg-card border border-white/10 mb-3">
           <img src="images/mem6.PNG" alt="Nikko J. Agcaoili" class="w-full h-full object-cover">
         </div>
         <p class="text-sm text-gray-200 font-medium">Nikko J. Agcaoili</p>
+        <span class="text-[11px] text-amberGlow/80 uppercase tracking-wider font-light mt-0.5">Documentation</span>
       </div>
     </div>
   </section>
 
+  <!-- ================= FOOTER DIVIDER (Laging kasing-lapad ng Gallery Grid) ================= -->
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="border-t border-white/10"></div>
+  </div>
+
   <!-- Footer -->
-  <footer class="border-t border-white/5 py-10 text-center text-xs text-gray-500">
+  <footer class="py-10 text-center text-xs text-gray-500">
     <p>© Art Appreciation Evaluation Blogsite • Santa Rosa, Laguna Field Study</p>
   </footer>
 </div>
@@ -565,7 +572,6 @@
 <!-- ================= LIGHT / DARK MODE TOGGLE ================= -->
 <button id="theme-toggle" aria-label="Toggle light or dark mode" aria-pressed="false" title="Toggle light/dark mode">
   <svg class="theme-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <!-- Sun + clouds (light mode) -->
     <g class="sun-group">
       <g class="sun-rays" stroke="#ffa801" stroke-width="1.6" stroke-linecap="round">
         <line x1="12" y1="1.5" x2="12" y2="3.5"/>
@@ -580,7 +586,6 @@
       <circle cx="12" cy="12" r="5" fill="#ffa801"/>
       <path class="cloud" d="M6.5 17.5c-1.66 0-3-1.34-3-3 0-1.5 1.1-2.74 2.53-2.96.4-1.9 2.08-3.34 4.1-3.34 2.14 0 3.9 1.6 4.18 3.67 1.68.2 2.99 1.63 2.99 3.33 0 1.66-1.34 3-3 3H6.5z" fill="#eef1f5" stroke="#c7ccd4" stroke-width="0.5"/>
     </g>
-    <!-- Moon + stars (dark mode) -->
     <g class="moon-group">
       <path class="moon" d="M20 13.2A8.6 8.6 0 1 1 11.4 3.6a7 7 0 0 0 8.6 9.6z" fill="#e2e8f0"/>
       <circle class="star star-1" cx="5" cy="6" r="0.8" fill="#f8fafc"/>
@@ -607,7 +612,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
       <button type="button" id="font-reset" class="a11y-font-btn" aria-label="Reset font size" title="Reset font size">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 12a9 9 0 1 0 3-6.7"/>
           <polyline points="3 3 3 8 8 8"/>
         </svg>
@@ -636,7 +641,7 @@
 <!-- ================= SCRIPT ================= -->
 <script>
 /* ======================================================
-   DATA — Replace image paths and details with your own
+   DATA
 ====================================================== */
 const artworks = [
   {
@@ -705,7 +710,7 @@ const artworks = [
     location: "Ayala Malls, Nuvali ",
     theory: "Utilitarianism",
     theoryExplanation: "The artwork's main purpose is highly practical and functional. It is not meant to be a deep emotional statement or a perfectly realistic portrait. Instead, it is a tool used by a business or property manager to decorate a commercial space, hide an empty storefront, and create a pleasant mood for shoppers. Its true value comes from how well it serves the everyday needs of the retail environment.",
-    description: "\"Digital Stride\" is a large printed vinyl wrap covering a commercial store window and door. It shows a highly stylized digital illustration of a woman walking while looking back over her shoulder, holding a red smartphone and a pink strap against a background of flat, colorful geometric shapes.",
+    description: "\"Digital Stride\" is a large printed vinyl wrap covering a commercial store window and door. It shows a highly stylized digital illustration of a woman walking while looking back over her shoulder, holding a red smartphone and a pink strap against a background of flat, theoretical geometric shapes.",
     analysis: "The design uses a modern commercial illustration style known for exaggerated body proportions, minimal facial features, and flat, solid colors. The artist uses a warm, pastel color palette of pinks, oranges, and earthy browns to create a friendly and approachable mood. There is no shading or 3D depth.",
     interpretation: "This piece captures the fast paced, connected lifestyle of today's modern consumer. The figure is multitasking by checking her phone while on the move, reflecting how deeply technology is tied to our daily routines. The abstract, colorful background suggests a lively, energetic urban shopping district. It is meant to create a highly idealized, trendy, and upbeat atmosphere that makes the surrounding shopping center feel modern and active.",
   },
@@ -747,7 +752,6 @@ const STEPS = [
   { key: "interpretation", label: "Interpretation" },
 ];
 
-// Inline SVG icons used by the speak buttons (swapped based on state)
 const ICON_PLAY = `
   <svg viewBox="0 0 24 24" fill="currentColor">
     <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"/>
@@ -797,7 +801,6 @@ themeToggle.addEventListener("click", () => {
 let currentSpeakBtn = null;
 let speakSession = 0;
 
-// Split long text into short chunks (browsers cut off long utterances)
 function splitIntoChunks(text, maxLen = 180) {
   const parts = text.replace(/\s+/g, " ").trim().split(/(?<=[.!?,;:])\s+/);
   const chunks = [];
@@ -834,13 +837,11 @@ function toggleSpeak(text, btnEl) {
     return;
   }
 
-  // Same button clicked again: stop
   if (currentSpeakBtn === btnEl) {
     stopSpeaking();
     return;
   }
 
-  // Stop anything else in progress
   stopSpeaking();
 
   const session = speakSession;
@@ -852,7 +853,7 @@ function toggleSpeak(text, btnEl) {
   btnEl.innerHTML = ICON_PAUSE;
 
   function next() {
-    if (session !== speakSession) return; // cancelled or replaced
+    if (session !== speakSession) return;
     if (i >= chunks.length) {
       resetSpeakBtn(btnEl);
       currentSpeakBtn = null;
@@ -870,7 +871,6 @@ function toggleSpeak(text, btnEl) {
     window.speechSynthesis.speak(u);
   }
 
-  // small delay so cancel() finishes before speak() (Chrome bug)
   setTimeout(next, 100);
 }
 
@@ -892,7 +892,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Font size scaling (3 levels)
 const fontScaleClasses = ["", "font-scale-2", "font-scale-3"];
 let fontScaleIndex = 0;
 try {
@@ -921,7 +920,6 @@ document.getElementById("font-reset").addEventListener("click", () => {
   applyFontScale();
 });
 
-// Color-blind friendly mode
 const colorblindToggle = document.getElementById("colorblind-toggle");
 let colorblindOn = false;
 try { colorblindOn = localStorage.getItem("a11y-colorblind") === "true"; } catch (e) {}
@@ -939,7 +937,6 @@ colorblindToggle.addEventListener("click", () => {
   applyColorblindMode();
 });
 
-// Read the entire page aloud: hero intro, all photo evaluations, and the team section
 const speakIntroBtn = document.getElementById("speak-intro");
 
 function buildFullPageSpeechText() {
@@ -1039,12 +1036,10 @@ function renderGallery() {
       </div>
     `;
 
-    // Lightbox trigger
     card.querySelector("[data-lightbox-trigger]").addEventListener("click", () => {
       openLightbox(art.image, art.title);
     });
 
-    // Stepper interactivity
     const panels = card.querySelectorAll("[data-panel]");
     const dots = card.querySelectorAll(".step-dot");
     const labelBtns = card.querySelectorAll(".step-label-btn");
@@ -1072,7 +1067,6 @@ function renderGallery() {
       btn.addEventListener("click", () => setStep(i));
     });
 
-    // Read aloud (text-to-speech) for this photo's full evaluation
     const speakBtn = card.querySelector("[data-speak-card]");
     const speakText = [
       art.title + ".",
