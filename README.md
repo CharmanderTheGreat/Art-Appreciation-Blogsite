@@ -44,23 +44,38 @@ Every photograph is also classified under one of four aesthetic theories: *Imita
 
 ---
 
+## ✨ Site Experience
+
+* *Intro Screen:* The site opens with a cinematic intro overlay. Page scrolling is locked and the floating buttons (light/dark mode and accessibility) stay hidden until the visitor clicks *Enter Gallery*, then they fade in together with the gallery.
+* *Light / Dark Mode:* A toggle button (bottom-right, above the accessibility button) switches between a dark theme (default) and a light theme. The choice is saved in localStorage.
+* *Image Lightbox:* Click any photo to view it enlarged. Press `Esc` or click outside the image to close.
+
+---
+
 ## ♿ Accessibility Features (GEDSI)
 
 The blog includes an accessibility panel (♿ button, bottom-right) to make the content easier to use for more people:
 
-* *Read Aloud:* Text-to-speech using the browser's built-in Web Speech API. Each photo has its own 🔊 button, and the panel has a *Read Entire Page* option that reads the introduction, all photo evaluations, and the team section.
+* *Read Aloud:* Text-to-speech using the browser's built-in Web Speech API. Each photo has its own 🔊 button, and the panel has a *Read Entire Page* option that reads the introduction, all photo evaluations, and the team section. Long text is split into short chunks so playback does not cut off in browsers like Chrome and Edge.
 * *Color-Blind Mode:* Switches the accent colors to the Okabe-Ito color-blind-safe palette.
 * *Font Size Controls:* `−`, `+`, and reset (↺) buttons with 3 text size levels.
+* *Reduced Motion:* Animations are minimized automatically for visitors whose system uses the "reduce motion" setting.
 
-Accessibility settings (font size and color-blind mode) are saved in the browser's localStorage, so they stay after a refresh.
+Accessibility and theme settings (font size, color-blind mode, and light/dark mode) are saved in the browser's localStorage, so they stay after a refresh.
+
+---
+
+## 🔗 Link Preview & SEO
+
+The `<head>` of `index.html` includes a page title, meta description, and Open Graph / Twitter Card tags, so shared links (Messenger, Discord, etc.) show the site title, description, and a gallery photo (`images/1.jpg`) instead of a random image from the page. If a shared link still shows an old preview, re-scrape it with the Facebook Sharing Debugger, since platforms cache previews.
 
 ---
 
 ## 🛠️ Built With
 
 * *HTML5:* Semantic markup structure (all code consolidated in a single `index.html`).
-* *Tailwind CSS (via CDN):* Responsive, utility-first styling with a dark aesthetic theme, plus custom CSS for animations and accessibility modes.
-* *JavaScript (Vanilla):* Dynamic gallery rendering from a data array, step-by-step evaluation tabs, image lightbox, and accessibility features.
+* *Tailwind CSS (via CDN):* Responsive, utility-first styling with dark and light themes, plus custom CSS for animations and accessibility modes.
+* *JavaScript (Vanilla):* Dynamic gallery rendering from a data array, step-by-step evaluation tabs, image lightbox, theme toggle, and accessibility features.
 * *Google Fonts:* Cinzel and Plus Jakarta Sans.
 * *GitHub Pages:* Static site hosting and deployment.
 
@@ -74,14 +89,18 @@ Art-Appreciation-Blogsite/
 ├── README.md
 └── images/
     ├── 1.jpg ... 10.jpg        # Artwork photographs
-    └── mem1.jpg ... mem6.jpg   # Team member photos
+    └── mem1.jpg ... mem6.PNG   # Team member photos (mem5 is .jpeg, mem6 is .PNG)
 ```
+
+> File extensions are case-sensitive on GitHub Pages, so `mem6.PNG` must match the `src` in `index.html` exactly.
 
 ---
 
 ## ✏️ Editing the Content
 
 All photo entries live in the `artworks` array inside the `<script>` of `index.html`. Each entry has an image path, title, location, aesthetic theory, theory explanation, and the three evaluation steps (description, analysis, interpretation). Team member photos and names are in the *About the Team* section.
+
+If the repository is renamed, update the `og:url` and `og:image` links in the `<head>` as well.
 
 ---
 
